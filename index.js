@@ -42,7 +42,6 @@ client.connect(err => {
             size: file.size,
             img: Buffer.from(encImg, 'base64')
         };
-        
         const src = image.img;
 
         serviceCollection.insertOne({ taskName, description, src, image })
@@ -88,7 +87,6 @@ client.connect(err => {
     // store customer order in database
     app.post('/placeOrder', (req, res) => {
         order = req.body;
-        console.log(order)
         customerOrdersCollection.insertOne(order)
             .then(result => {
                 res.send(result.insertedCount > 0)

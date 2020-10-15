@@ -50,7 +50,7 @@ client.connect(err => {
             })
     })
 
-    // service get method
+    // fetch all service from database (get method)
     app.get('/services', (req, res) => {
         serviceCollection.find({})
             .toArray((err, documents) => {

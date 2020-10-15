@@ -1,6 +1,7 @@
 const express = require('express')
 require('dotenv').config()
 const MongoClient = require('mongodb').MongoClient;
+const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
 const  ObjectId  = require('mongodb').ObjectId;
@@ -10,6 +11,9 @@ const port = 5000
 const app = express()
 app.use(bodyParser.json());
 app.use(cors());
+app.use(express.static('services'));
+app.use(fileUpload());
+
 
 app.get('/', (req, res) => {
     res.send('Welcome to Creative Agency Server Side')
@@ -27,10 +31,23 @@ client.connect(err => {
 
     // add service post method
     app.post('/addService', (req, res) => {
-        service = req.body;
-        serviceCollection.insertOne(service)
+        const file = req.files.file;
+        const taskName = req.body.taskName;
+        const description = req.body.description;
+        const newImg = file.data;
+        const encImg = newImg.toString('base64');
+
+        const image = {
+            contentType: file.mimetype,
+            size: file.size,
+            img: Buffer.from(encImg, 'base64')
+        };
+        
+        const src = image.img;
+
+        serviceCollection.insertOne({ taskName, description, src, image })
             .then(result => {
-                res.send(result.insertedCount > 0)
+                res.send(result.insertedCount > 0);
             })
     })
 

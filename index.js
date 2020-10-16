@@ -85,7 +85,7 @@ client.connect(err => {
     })
 
     // store customer order in database
-    app.post('/placeOrder', (req, res) => {
+    app.post('/insertOrder', (req, res) => {
         const file = req.files.file;
         const status = req.body.status;
         const name = req.body.name; 

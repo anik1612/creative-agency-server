@@ -93,7 +93,7 @@ client.connect(err => {
     //         })
     // })
 
-    app.post('/placeOrder', (req, res) => {
+    app.post('/placeOrders', (req, res) => {
         const file = req.files.file;
         const name = req.body.name;
         const description = req.body.description;

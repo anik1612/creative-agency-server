@@ -4,10 +4,10 @@ const MongoClient = require('mongodb').MongoClient;
 const fileUpload = require('express-fileupload');
 const cors = require('cors')
 const bodyParser = require('body-parser');
-const ObjectId = require('mongodb').ObjectId;
+const  ObjectId  = require('mongodb').ObjectId;
 const port = 5000
 
-// middleware setup for this application
+// middleware 
 const app = express()
 app.use(bodyParser.json());
 app.use(cors());
@@ -51,8 +51,8 @@ client.connect(err => {
     })
 
     // fetch all service from database (get method)
-    app.get('/services', cors(), (req, res) => {
-        serviceCollection.find({}).limit(6)
+    app.get('/services', (req, res) => {
+        serviceCollection.find({})
             .toArray((err, documents) => {
                 res.send(documents);
             })
@@ -69,7 +69,7 @@ client.connect(err => {
 
     // feedback get method
     app.get('/feedbacks', (req, res) => {
-        feedbackCollection.find({}).limit(6)
+        feedbackCollection.find({})
             .toArray((err, documents) => {
                 res.send(documents);
             })
@@ -85,29 +85,11 @@ client.connect(err => {
     })
 
     // store customer order in database
-    app.post('/insertOrder', (req, res) => {
-        const file = req.files.file;
-        const status = req.body.status;
-        const name = req.body.name;
-        const email = req.body.email;
-        const service = req.body.service;
-        const projectDetails = req.body.projectDetails;
-        const price = req.body.price;
-        const description = req.body.description;
-        const status = req.body.status;
-
-        const newImg = file.data;
-        const encImg = newImg.toString('base64');
-
-        const image = {
-            contentType: file.mimetype,
-            size: file.size,
-            img: Buffer.from(encImg, 'base64')
-        };
-
-        customerOrdersCollection.insertOne({ name, email, service, projectDetails, price, description, status, image })
+    app.post('/placeOrder', (req, res) => {
+        order = req.body;
+        customerOrdersCollection.insertOne(order)
             .then(result => {
-                res.send(result.insertedCount > 0);
+                res.send(result.insertedCount > 0)
             })
     })
 
@@ -145,12 +127,10 @@ client.connect(err => {
             })
     })
 
-
-    // update working status
     app.patch('/update/:id', (req, res) => {
-        customerOrdersCollection.updateOne({ _id: ObjectId(req.params.id) },
+        customerOrdersCollection.updateOne({_id: ObjectId(req.params.id)},
             {
-                $set: { status: req.body.status }
+                $set: {status: req.body.status}
             })
             .then(result => {
                 res.send(result.modifiedCount > 0)

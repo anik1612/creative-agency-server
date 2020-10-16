@@ -97,9 +97,8 @@ client.connect(err => {
             size: file.size,
             img: Buffer.from(encImg, 'base64')
         };
-        const src = image.img;
 
-        customerOrdersCollection.insertOne({ name, email, src, image })
+        customerOrdersCollection.insertOne({ name, email })
             .then(result => {
                 res.send(result.insertedCount > 0);
             })

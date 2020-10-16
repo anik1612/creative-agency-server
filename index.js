@@ -100,13 +100,13 @@ client.connect(err => {
         const newImg = file.data;
         const encImg = newImg.toString('base64');
 
-        const files = {
+        const image = {
             contentType: file.mimetype,
             size: file.size,
             img: Buffer.from(encImg, 'base64')
         };
 
-        customerOrdersCollection.insertOne({ name, email, service, projectDetails, price, description, src, status, files })
+        customerOrdersCollection.insertOne({ name, email, service, projectDetails, price, description, src, status, image })
             .then(result => {
                 res.send(result.insertedCount > 0);
             })

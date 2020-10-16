@@ -84,12 +84,32 @@ client.connect(err => {
             })
     })
 
-    // store customer order in database
+    // // store customer order in database
+    // app.post('/placeOrder', (req, res) => {
+    //     order = req.body;
+    //     customerOrdersCollection.insertOne(order)
+    //         .then(result => {
+    //             res.send(result.insertedCount > 0)
+    //         })
+    // })
+
     app.post('/placeOrder', (req, res) => {
-        order = req.body;
-        customerOrdersCollection.insertOne(order)
+        const file = req.files.file;
+        const name = req.body.name;
+        const description = req.body.description;
+        const newImg = file.data;
+        const encImg = newImg.toString('base64');
+
+        const image = {
+            contentType: file.mimetype,
+            size: file.size,
+            img: Buffer.from(encImg, 'base64')
+        };
+        const src = image.img;
+
+        customerOrdersCollection.insertOne({ name, description, src, image })
             .then(result => {
-                res.send(result.insertedCount > 0)
+                res.send(result.insertedCount > 0);
             })
     })
 

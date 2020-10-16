@@ -86,7 +86,7 @@ client.connect(err => {
 
     // store customer order in database
     app.post('/placeOrder', (req, res) => {
-        const order = req.body;
+        const {name, service, price, description} = req.body;
         const file = req.files.file 
         const newImg = file.data;
         const encImg = newImg.toString('base64');
@@ -97,7 +97,7 @@ client.connect(err => {
             img: Buffer.from(encImg, 'base64')
         };
         
-        customerOrdersCollection.insertOne({image, order})
+        customerOrdersCollection.insertOne({image, name, service, price, description})
             .then(result => {
                 res.send(result.insertedCount > 0)
             })

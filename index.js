@@ -88,6 +88,8 @@ client.connect(err => {
     app.post('/placeOrder', (req, res) => {
         const order = req.body;
         const file = req.files.file 
+        const newImg = file.data;
+        const encImg = newImg.toString('base64');
         
         const image = {
             contentType: file.mimetype,
@@ -95,7 +97,7 @@ client.connect(err => {
             img: Buffer.from(encImg, 'base64')
         };
         
-        customerOrdersCollection.insertOne(image)
+        customerOrdersCollection.insertOne({image})
             .then(result => {
                 res.send(result.insertedCount > 0)
             })

@@ -51,7 +51,7 @@ client.connect(err => {
     })
 
     // fetch all service from database (get method)
-    app.get('/services', (req, res) => {
+    app.get('/services', cors(), (req, res) => {
         serviceCollection.find({}).limit(6)
             .toArray((err, documents) => {
                 res.send(documents);
@@ -85,32 +85,32 @@ client.connect(err => {
     })
 
     // store customer order in database
-    app.post('/insertOrder', (req, res) => {
-        const file = req.files.file;
-        const status = req.body.status;
-        const name = req.body.name; 
-        const email = req.body.email; 
-        const service = req.body.service; 
-        const projectDetails = req.body.projectDetails; 
-        const price = req.body.price; 
-        const description = req.body.description; 
-        const src = req.body.src; 
-        const status = req.body.status; 
+    // app.post('/insertOrder', (req, res) => {
+    //     const file = req.files.file;
+    //     const status = req.body.status;
+    //     const name = req.body.name; 
+    //     const email = req.body.email; 
+    //     const service = req.body.service; 
+    //     const projectDetails = req.body.projectDetails; 
+    //     const price = req.body.price; 
+    //     const description = req.body.description; 
+    //     const src = req.body.src; 
+    //     const status = req.body.status; 
 
-        const newImg = file.data;
-        const encImg = newImg.toString('base64');
+    //     const newImg = file.data;
+    //     const encImg = newImg.toString('base64');
 
-        const image = {
-            contentType: file.mimetype,
-            size: file.size,
-            img: Buffer.from(encImg, 'base64')
-        };
+    //     const image = {
+    //         contentType: file.mimetype,
+    //         size: file.size,
+    //         img: Buffer.from(encImg, 'base64')
+    //     };
 
-        customerOrdersCollection.insertOne({ name, email, service, projectDetails, price, description, src, status, image })
-            .then(result => {
-                res.send(result.insertedCount > 0);
-            })
-    })
+    //     customerOrdersCollection.insertOne({ name, email, service, projectDetails, price, description, src, status, image })
+    //         .then(result => {
+    //             res.send(result.insertedCount > 0);
+    //         })
+    // })
 
     // fetch customer order from database
     app.get('/customerOrders', (req, res) => {

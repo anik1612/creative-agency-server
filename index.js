@@ -90,14 +90,14 @@ client.connect(err => {
         const file = req.files.file 
         const newImg = file.data;
         const encImg = newImg.toString('base64');
-        
+
         const image = {
             contentType: file.mimetype,
             size: file.size,
             img: Buffer.from(encImg, 'base64')
         };
         
-        customerOrdersCollection.insertOne({image})
+        customerOrdersCollection.insertOne({image, order})
             .then(result => {
                 res.send(result.insertedCount > 0)
             })

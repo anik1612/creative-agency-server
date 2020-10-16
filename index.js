@@ -52,7 +52,7 @@ client.connect(err => {
 
     // fetch all service from database (get method)
     app.get('/services', (req, res) => {
-        serviceCollection.find({})
+        serviceCollection.find({}).limit(6)
             .toArray((err, documents) => {
                 res.send(documents);
             })
@@ -69,7 +69,7 @@ client.connect(err => {
 
     // feedback get method
     app.get('/feedbacks', (req, res) => {
-        feedbackCollection.find({})
+        feedbackCollection.find({}).limit(6)
             .toArray((err, documents) => {
                 res.send(documents);
             })

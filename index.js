@@ -7,7 +7,7 @@ const bodyParser = require('body-parser');
 const  ObjectId  = require('mongodb').ObjectId;
 const port = 5000
 
-// middleware 
+// middleware setup for this application
 const app = express()
 app.use(bodyParser.json());
 app.use(cors());
@@ -146,6 +146,8 @@ client.connect(err => {
             })
     })
 
+
+    // update working status
     app.patch('/update/:id', (req, res) => {
         customerOrdersCollection.updateOne({_id: ObjectId(req.params.id)},
             {

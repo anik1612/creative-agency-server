@@ -3,7 +3,7 @@ require('dotenv').config();
 const MongoClient = require('mongodb').MongoClient;
 const fileUpload = require('express-fileupload');
 const cors = require('cors');
-const ObjectId = require('mongodb').ObjectId;
+const ObjectId = require('mongodb').ObjectID;
 const port = 5000;
 
 // middleware
@@ -65,21 +65,24 @@ client.connect((err) => {
 	// remove service delete method
 	app.delete('/deleteService/:id', (req, res) => {
 		const id = req.params.id;
-		serviceCollection.find({ _id: id })
-        .then((result) => {
-			if (result.deleteCount > 0) {
-				res.json({
-					success: true,
-					message: 'Successfully Deleted',
-				});
-			}
-		})
-        .catch((err) => {
-            res.json({
+		console.log(id);
+		try {
+			serviceCollection.findOneAndDelete({ _id: ObjectId(id) })
+			.then((result) => {
+				if (result) {
+					res.json({
+						success: true,
+						message: 'Successfully Deleted',
+					});
+				}
+			})
+		}
+		catch (e) {
+			res.json({
                 success: false,
-                message: err.message,
+                message: e,
             })
-        })
+		}
 	});
 
 	// fetch all service from database (get method)
